@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_moon/widgets/custom_dropdown_button.dart';
 
 class HomePage extends StatelessWidget {
   late double _deviceHeight, _deviceWidth;
@@ -16,11 +17,25 @@ class HomePage extends StatelessWidget {
         height: _deviceHeight,
         width: _deviceWidth,
         padding: EdgeInsets.symmetric(horizontal: _deviceWidth * 0.05),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [_pageTitle(), _destinationDropDownWidget()],
+        // child: Column(
+        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //   mainAxisSize: MainAxisSize.max,
+        //   crossAxisAlignment: CrossAxisAlignment.start,
+        //   children: [_pageTitle(), _astroImageWidget(), _bookRideWidget()],
+        // ),
+        child: Stack(
+          children: [
+            Align(
+              alignment: Alignment.centerRight,
+              child: _astroImageWidget(),
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [_pageTitle(), _bookRideWidget()],
+            ),
+          ],
         ),
       ),
     ));
@@ -39,6 +54,8 @@ class HomePage extends StatelessWidget {
 
   Widget _astroImageWidget() {
     return Container(
+      width: _deviceWidth * 0.65,
+      height: _deviceHeight * 0.60,
       decoration: const BoxDecoration(
         image: DecorationImage(
             fit: BoxFit.fill,
@@ -48,30 +65,55 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _destinationDropDownWidget() {
-    List<String> _items = [
-      "Moka_one station",
-      "Sudo station",
-      "Youston station"
-    ];
+    return CustomDropDownButtonClass(
+        values: const ["Moka_one station", "Sudo station", "Youston station"],
+        width: _deviceWidth);
+  }
 
+  Widget _travellersInformationWidget() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        CustomDropDownButtonClass(
+            values: const ["1", "2", "3", "4"], width: _deviceWidth * 0.45),
+        CustomDropDownButtonClass(
+            values: const ["Economy", "Business", "First", "Private"],
+            width: _deviceWidth * 0.40)
+      ],
+    );
+  }
+
+  Widget _bookRideWidget() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: _deviceWidth * 0.05),
-      width: _deviceWidth,
+      height: _deviceHeight * 0.25,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          _destinationDropDownWidget(),
+          _travellersInformationWidget(),
+          _rideButton(),
+        ],
+      ),
+    );
+  }
+
+  Widget _rideButton() {
+    return Container(
+      margin: EdgeInsets.only(bottom: _deviceHeight * 0.005),
       decoration: BoxDecoration(
-          color: const Color.fromRGBO(53, 53, 53, 1.0),
-          borderRadius: BorderRadius.circular(10)),
-      child: DropdownButton(
-        underline: Container(),
-        dropdownColor: const Color.fromRGBO(53, 53, 53, 1.0),
-        style: const TextStyle(color: Colors.white),
-        value: _items.first,
-        onChanged: (value) {},
-        items: _items.map((e) {
-          return DropdownMenuItem(
-            value: e,
-            child: Text(e),
-          );
-        }).toList(),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      width: _deviceWidth,
+      child: MaterialButton(
+        onPressed: () {},
+        child: const Text(
+          "Book ride",
+          style: TextStyle(color: Colors.black),
+        ),
       ),
     );
   }
